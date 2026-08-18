@@ -6,3 +6,8 @@ build-backend = "hatchling.build"
 [project]
 name = "order-app"
 version = "0.1.0"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "httpx2",
+]
