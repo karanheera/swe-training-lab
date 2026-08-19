@@ -51,3 +51,24 @@ jobs:
         run: |
           docker push ghcr.io/karanheera/order_app:dev
           docker push ghcr.io/karanheera/order_app:${{ github.sha }}
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: docker
+    runs-on: self-hosted
+
+    steps:
+      - name: Deploy application
+        run: |
+          docker pull ghcr.io/karanheera/order_app:${{ github.sha }}
+
+          docker rm -f order-app || true
+
+          docker run -d \
+            --name order-app \
+            --restart unless-stopped \
+            -p 8000:8000 \
+            -e ENVIRONMENT=production \
+            ghcr.io/karanheera/order_app:${{ github.sha }}
+          sleep 5
+          curl --fail http://127.0.0.1:8000/health
