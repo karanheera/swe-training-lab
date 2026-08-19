@@ -1,0 +1,20 @@
+name: Runner Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-runner:
+    runs-on: self-hosted
+
+    steps:
+      - name: Check runner
+        run: |
+          echo "Hostname:"
+          hostname
+
+          echo "User:"
+          whoami
+
+          echo "Docker:"
+          docker --version
