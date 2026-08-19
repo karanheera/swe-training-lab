@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 
 from order_app.pricing import calculate_order_summary
@@ -7,7 +9,10 @@ app = FastAPI()
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    return {
+        "status": "ok",
+        "environment": os.getenv("ENVIRONMENT", "unknown"),
+    }
 
 
 @app.get("/order")
